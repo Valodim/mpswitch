@@ -5,10 +5,15 @@ typeset -A prefixes
 prefixes[localhost]=''
 prefixes[fairycake]='valodim/'
 
-[[ $# != 2 ]] && { print "Usage: mpswitch host-from host-to" >&2 ; exit }
+[[ $# == 0 ]] && { print "Usage: mpswitch [host-from] host-to" >&2 ; exit }
 
-host1=$1
-host2=$2
+if [[ $# == 1 ]]; then
+    host1='localhost'
+    host2=$1
+else
+    host1=$1
+    host2=$2
+fi
 
 # make sure both hosts are reachable!
 ping -W 1 -c 1 $host1 > /dev/null || { print "Unreachable host: $host1" >&2; exit }
