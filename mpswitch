@@ -36,7 +36,7 @@ mpc -h $host2 clear -q
 print ${(F)plist} | mpc add -h $host2
 
 mpc -h $host1 pause -q
-ptime=${${$(mpc -h $host1 status | grep -o '(.*%)')#\(}%\)}
+ptime=${$(mpc -h $host1 status | grep -E -o '[0-9]+:[0-9]+/')%/}
 
 print "playing track: $pos ($ptime)"
 mpc -h $host2 -q play $pos
