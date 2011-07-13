@@ -8,6 +8,10 @@ prefixes[fairycake]='valodim/'
 host1=$1 ; [[ -z $host1 ]] && host1='localhost'
 host2=$2 ; [[ -z $host2 ]] && host2='fairycake'
 
+# make sure both hosts are reachable!
+ping -W 1 -c 1 $host1 > /dev/null || { print "Unreachable host: $host1"; exit }
+ping -W 1 -c 1 $host2 > /dev/null || { print "Unreachable host: $host2"; exit }
+
 lprefix=$prefixes[$host1]
 rprefix=$prefixes[$host2]
 
