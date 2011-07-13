@@ -1,0 +1,42 @@
+#!/usr/bin/env zsh
+
+# local and remote prefix to the same music database
+typeset -A prefixes
+prefixes[localhost]=''
+prefixes[fairycake]='valodim/'
+
+if [[ -z $1 ]]; then
+    host1='localhost'
+else
+    host1=$1
+fi
+if [[ -z $2 ]]; then
+    host2='fairycake'
+else
+    host2=$2
+fi
+
+lprefix=$prefixes[$host1]
+rprefix=$prefixes[$host2]
+
+# get local playlist
+plist=( ${(f)"$( mpc -h $host1 -f '%file%' playlist )"} )
+
+# strip local prefix
+plist=( $rprefix${^${plist#$lprefix}} )
+
+pos=$(mpc -h $host1 -f '%position%' status | head -n 1)
+
+# clear remote playlist
+mpc -h $host2 clear -q
+# set up new one
+print ${(F)plist} | mpc add -h $host2
+
+mpc -h $host1 pause -q
+ptime=${${$(mpc -h $host1 status | grep -o '(.*%)')#\(}%\)}
+
+print "playing track: $pos ($ptime)"
+mpc -h $host2 -q play $pos
+if [[ -n $ptime ]]; then
+    mpc -h $host2 -q seek $ptime
+fi
