@@ -1,0 +1,5 @@
+This is a small script which basically takes the playlist and playing status
+of one running mpd instance and moves it to another.
+
+I use it to conveniently move the playing status from my laptop to my media
+server at home or vice versa.
