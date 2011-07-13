@@ -5,16 +5,8 @@ typeset -A prefixes
 prefixes[localhost]=''
 prefixes[fairycake]='valodim/'
 
-if [[ -z $1 ]]; then
-    host1='localhost'
-else
-    host1=$1
-fi
-if [[ -z $2 ]]; then
-    host2='fairycake'
-else
-    host2=$2
-fi
+host1=$1 ; [[ -z $host1 ]] && host1='localhost'
+host2=$2 ; [[ -z $host2 ]] && host2='fairycake'
 
 lprefix=$prefixes[$host1]
 rprefix=$prefixes[$host2]
